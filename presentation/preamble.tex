@@ -1,0 +1,41 @@
+% XeLaTeX fonts
+\usepackage{fontspec}
+
+\usepackage{appendixnumberbeamer}
+
+\usetheme[progressbar=frametitle, numbering=fraction]{metropolis}
+\useoutertheme[footline=empty, subsection=false]{miniframes}
+\setbeamercolor{section in head/foot}{fg=white, bg=mDarkTeal}
+\setbeamertemplate{section in toc}[sections numbered]
+%\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+\author{Marlene Heinrich\and Gregor Suchan}
+\title{\LaTeX{}-Anfängerkurs}
+\date{03.~Juli 2022}
+\institute{Albert-Ludwigs-Universität Freiburg}
+
+% Babel
+\usepackage[ngerman]{babel}
+
+% Pretty tables
+\usepackage{booktabs}
+
+% Typesetting
+\usepackage{amsmath,amssymb,dsfont,mathtools,amsthm}
+
+% Code listings
+\usepackage{csquotes}
+
+% siunitx because its good
+\usepackage[locale=DE, separate-uncertainty=true]{siunitx}
+
+% Citations
+\usepackage[date=year, isbn=false, doi=false, url=false, eprint=false]{biblatex}
+\addbibresource{references.bib}
+
+\usepackage{graphicx}
+
+\usepackage{tikz}
+
+% Only for advanced humorous purposes.
+\usepackage{soul}

@@ -1,0 +1,343 @@
+% Unterschiedliche Klassen bieten unterschiedliche Strukturen. Article bietet
+% alles was man vielleicht für ein Protokoll braucht, aber für längere Arbeiten
+% hätte man vielleicht gerne Kapitel, dann lohnt sich ein Blick in "book" oder
+% "report"
+\documentclass[a4paper]{article} 
+
+%\usepackage[utf8]{inputenc} % macht das Latex Dinge wie "ä, ü, ß" frisst
+
+% vernünftige Worttrennung auf Deutsch. Für Englisch würden wir ngerman durch
+% english ersetzten, alle anderen Sprachen guckt man kurz nach.
+\usepackage[ngerman]{babel} 
+
+\usepackage[separate-uncertainty=true]{siunitx} % schnieke Darstellung von Einheiten
+
+\usepackage{booktabs}
+
+\usepackage{amsmath} % align-Umgebungen
+
+\usepackage{hyperref}
+
+\usepackage[ngerman]{cleveref}
+
+\usepackage{graphicx} % Bilder einfügen
+
+% Kein Einrücken nach den Absätzen
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.5ex}
+
+% Dinge, die wir für unsere Quellensammlung brauchen
+% in Texstudio muss biber eingestellt werden
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\addbibresource{references.bib}
+\usepackage{csquotes}
+
+
+\title{AP-\LaTeX kurs}
+\author{Mali Heinrich \and Gregor Suchan}
+\date{durchgeführt am 03.~Juli 2022}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\section{Sprache einstellen}
+Das Default-\LaTeX{} kann noch nicht alle Zeichen, die wir gerne hätten, also
+ergänzen wir in unserer Präambel (also nach der \verb|\documentclass| und vor
+dem \verb|\begin{document}|) folgendes: \verb|\usepackage[utf8]{inputenc}|. \#
+wenn \LaTeX{} noch alt ist
+
+Außerdem ist einer der fancy Dinge von \LaTeX, dass es selbstständig Wörter
+trennt, wenn man es ihm denn sagt und damit einen wunderschönen Blocksatz
+generiert.
+Auch dafür nutzen wir wieder ein package und zwar wieder in der
+Präambel mit dem Befehl \verb|\usepackage[ngerman]{babel}|.
+
+\section{Struktur, Absätze, Ränder}
+\LaTeX{} bietet uns unterschiedliche eingebaute Möglichkeiten die Struktur zu
+kontrollieren.
+Quasi das selbe wie Überschriften in Wort setzten und die Schriftgröße
+einstellen, nur, dass wir hier unsere Wünsche in die Befehle schreiben und
+\LaTeX{} sich um den Rest kümmert.
+
+\subsection{Strukturelemente}
+Wir hatten jetzt schon die \verb|\section{}|, die uns in diesem Fall große
+Überschrif\-ten erstellt.
+Wollen wir jetzt diesen Bereich unterteilen, können wir das mit dem
+Befehl~\verb|\subsection{}|.
+Diese basteln uns kleinere Überschriften und man sieht, dass fortlaufend
+nummeriert wird.
+Beide Dinge landen auch in unserem Inhaltsverzeichnis, wenn wir denn eines
+erstellen.
+Das geht mit \verb|\tableofcontents| und zwar an der Stelle, an der wir auch
+das Verzeichnis haben wollen.
+
+\paragraph{Paragraphen}
+Wenn wir nun ein Strukturelement wollen, aber keine Nummern und das ganze soll
+auch nicht ins Inhaltsverzeichnis, dann können wir einen \verb|\paragraph{}|
+nutzen.
+Da schreibt man aber direkt neben der Überschrift weiter.
+
+\subsubsection*{Subsubsection mit Sternchen}
+Alle nummerierten Strukturelemente können wir mit einem * versehen und
+erreichen damit ein nicht-nummeriertes Element.
+Dinge mit Sternchen landen aber auch nicht in unserem Inhaltsverzeichnis.
+Dafür sieht das ganze quasi aus wie der Paragraph, nur dass wir nicht daneben,
+sondern darunter weiterschreiben.
+
+\subsection{Absätze und Whitespaces}
+Whitespaces handhabt \LaTeX{} vielleicht etwas ungewohnt: Es ist nämlich egal,
+wieviele Leerzeichen oder Tabs man        setzt.  Auch (einfache) Absätze
+werden standardmäßig ignoriert.
+Wenn man in \LaTeX{} einen Absatz mit einer Leerzeile im Text macht, also so
+
+dann landet der auch in unserem Dokument. 
+Die Default-Einstellung ist nun, dass Absätze eingerückt werden, wenn man
+lieber einen kleinen Abstand möchte, kann man das mit
+\verb|\setlength{\parindent}{0pt}| und
+
+\verb|\setlength{\parskip}{1ex plus 0.5ex minus 0.5ex}|
+
+
+\subsection{Seitenränder}
+Auch hier gibt es schon Standardoptionen, sonst würden wir nichts sehen, aber
+falls man daran rumspielen möchte, können wir da mit
+\begin{center}
+  \begin{verbatim}
+    \usepackage[a4paper,
+                left=3cm, right=3cm,
+                top=2cm, bottom=2cm]{geometry}
+  \end{verbatim}
+\end{center}
+Und zumindest das Papierformat sollte man irgendwo hinschreiben, sonst gibt's
+ein US-Letter-Format.
+
+\section{Formeln}
+Es gibt unterschiedliche Möglichkeiten, wie wir Formeln darstellen können.
+Eine Option ist einfach im Text, etwa liefert und~\verb|$a+b=c$| gerade~$a+b=$.
+Die Symbole~\verb|$...$| begrenzen den Inline-Mathemodus.
+Das sieht auch ganz anders aus als einfach nur~\verb|a+b=c| in den Text zu
+schreiben: a+b=c.
+Griechische Symbole gibt es auch:
+\verb|$\beta = 2.5\gamma$| liefert uns~$\beta = 2.5\gamma$.
+Aber längere Rechnungen wollen wir nicht einfach in Text machen, dafür können
+wir die \verb|equation|-Umgebung benutzen, die das package \verb|amsmath|
+braucht.  Das sieht dann folgendermaßen aus
+\begin{equation}
+  \beta = 2.5\gamma.
+\end{equation}
+Wenn wir nun mehrere Gleichungen haben, dann können wir die in eine
+\verb|align|-Umgebung packen und machen einen Zeilenumbruch mit \verb|\\|, die
+Gleichheitszeichen können wir übereinander anordnen, indem wir ein \verb|&|
+davor setzen:
+\begin{align}
+  \beta &= 17\cdot \gamma \\
+  \alpha &= \frac{5}{\delta}.
+\end{align}
+Das liefert uns dann aber zwei Nummern neben den Gleichungen.
+Manchmal wollen wir das nicht, dann nehmen wir
+\begin{align}
+  \begin{split}
+     \beta &= 17\cdot \gamma \label{eq:ladida}\\
+    \alpha &= \frac{5}{\delta}.
+  \end{split}
+\end{align}
+Und wenn wir gar keine Nummer wollen, dann gibt es wieder ein Sternchen:
+\begin{align*}
+  \beta &= 2.5\gamma \text{ und } \\
+  \alpha &= \frac{5}{\delta}.
+\end{align*}
+Dinge, die wir vielleicht schreiben wollen sind zum Beispiel:
+\begin{enumerate}
+  \item \verb|\alpha \beta \gamma \rho \sigma \delta \epsilon| gibt uns in
+    einer Matheumgebung, also \verb|align| oder \verb|$...$|
+    $\alpha \beta \gamma \rho \sigma \delta \epsilon$.
+  \item \verb|\times \otimes \oplus \cup \cap \cdot| gibt $\times \otimes
+    \oplus \cup \cap \cdot$.
+  \item \verb|< > \subset \supset \subseteq \supseteq \leq \geq| gibt 
+    \begin{equation}
+      < > \subset \supset \subseteq \supseteq \leq \geq.
+    \end{equation}
+  \item \verb|\int \oint \sum \prod| gibt $\int \oint \sum \prod$.
+  \item \verb|F_{\text{rück}}| gibt $F_{\text{rück}}$, der Unterstrich gibt uns
+    also ein Subskript und wir gehen in eine Text-Umgebung, weil der Text sonst
+    kursiv wird ($Text\neq \text{Text} $).
+  \item analog: \verb|F_{g} G_{\epsilon} h_{\epsilon\delta}| gibt $F_{g}
+    G_{\epsilon} h_{\epsilon\delta}$.
+  % \item Wenn wir aus sonst welchen Gründen mehr Platz haben wollen: \verb|f g~h~~i~~\ j| gibt $f g~h~~i~~~j$
+  \item Normalerweise werden Whitespaces im Mathemodus vollständig ignoriert.
+    Stattdessen darf man diese dann manuell setzen:
+    \begin{center}
+      \begin{tabular}{ccc}
+        \verb|a\!b|      & gibt uns & $a\!b$, \\
+        \verb|ab|        & gibt uns & $ab$, \\
+        \verb|a\,b|      & gibt uns & $a\,b$, \\
+        \verb|a\:b|      & gibt uns & $a\:b$, \\
+        \verb|a\ b|      & gibt uns & $a\ b$, \\
+        \verb|a\quad b|  & gibt uns & $a\quad b$, \\
+        \verb|a\qquad b| & gibt uns & $a\qquad b$. \\
+      \end{tabular}
+    \end{center}
+  \item Integrale \verb|\int_{0}^{\infty} f(x)dx| macht $\int_{0}^{\infty}
+    f(x)dx$.
+  \item Je nach Stil ist das d in Integralen aufrecht und mit einem halben
+    Abstand \verb|\int_0^\infty f(x){\,}\mathrm{d}x| macht $\int_0^\infty
+    f(x)\,\text{d}x$.
+  \item \verb|\sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6}| gibt 
+    \begin{equation}
+      \sum_{i=1}^n i^2 = \frac{n(n+1)(2n+1)}{6}.
+    \end{equation}
+  \item \verb|\frac{\partial^2 f}{\partial x^2} f'(c)| gibt $\frac{\partial^2
+    f}{\partial x^2}f'(c)$.
+\end{enumerate}
+
+\section{Bilder einfügen}
+Wir brauchen auch zum Einfügen von Bildern ein package und schreiben
+dafür einfach~\verb|\usepackage{graphicx}| mit in die Präambel.
+
+Und jetzt können wir Bilder einfügen mit
+\begin{center}
+  \begin{verbatim}
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{cat.png}
+    \caption{Bild von einer Katze}%
+    \label{fig:cat}
+  \end{figure}
+  \end{verbatim}
+\end{center}
+
+\begin{figure}[bp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{cat.png}
+  \caption{Bild von einer Katze}%
+  \label{fig:cat}
+\end{figure}
+
+und dem ganzen eine schöne Bildunterschrift geben und ein Label, auf das wir
+dann später verweisen können.
+
+Figures sind Beispiele von Floating-Umgebungen.
+Diese werden automatisch nicht relativ zum umgebenden Text gesetzt,
+sondern~\LaTeX{} packt diese einfach an den besten Ort -- oder zumindest an den
+Ort, den~\LaTeX{} für den besten erachtet.
+Mit den Argumenten htbp (here, top, bottom, (next) page) in den eckigen
+Klammern kann man versuchen das Bild durch die Gegend zu schieben, das klappt
+mehr oder weniger gut.
+
+\section{Referenzen oder Verweise}
+\label{sec:referenzen_verweise}
+Wenn wir an irgendeinem späteren Punkt den Leser mal wieder daran erinnern
+wollen, dass wir schon mal was gesagt haben oder einfach nur auf ein Bild
+hinweisen wollen, hat \LaTeX{} da Dinge für uns parat: zum Beispiel in
+Form von \verb|\usepackage[ngerman]{cleveref}|.
+So können wir an unsere Gleichung erinnern mit \verb|\cref{eq:ladida}|, das
+gibt dann \cref{eq:ladida}.
+Wenn wir jetzt noch  \verb|\usepackage{hyperref}| vor das cleveref-package
+setzen, dann ist der Verweis nice and clicky.
+Verweisen können wir auf quasi alles auf unser Bild \cref{fig:cat} oder auf
+diesen \cref{sec:referenzen_verweise}.
+
+\section{Tabellen}
+Einen nicht ganz unerheblichen Teil der Zeit verbringt man im AP damit, Werte
+schön in Tabellen darzustellen.
+Das ist in \LaTeX{} zwar nicht angenehmer als anderswo (und zwar gar nicht),
+aber liefert uns dafür auch ein paar angenehme Dinge wie Tabellennummerierung,
+Tabellenunterschrift und die Möglichkeit auf Tabellen zu verweisen.
+Das Einfügen von Tabellen funktioniert nun ganz ähnlich wie das von Bildern.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{c|c|c|c}
+    Wert 1 & Wert 2 & Wert 3 & Wert 4 \\ \hline
+    1      & 35     & 12     & 15 \\
+    32     & 12     & 33.5   & 1 \\
+  \end{tabular}
+  \caption{Unsere erste Tabelle}%
+  \label{tab:erste_tabelle}
+\end{table}
+
+Wenn wir nun einen Blick in \cref{tab:erste_tabelle} werfen, ist das ja schon
+fast zufriedenstellend.
+Wenn wir nun Werte mit Einheiten haben, können wir die Einheiten oben in die
+Überschrift packen (zu Empfehlen) oder auch hinter die Zahlen schreiben (wenn
+es aus irgendeinem Grund unterschiedliche Einheiten sein sollten).
+Dazu verwenden wir das SI-package, was wir aber erst mal importieren müssen.
+Also schreiben wir \verb|\usepackage{siunitx}| in die Präambel und können
+unsere Tabelle noch mal schreiben.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{c|c|c|c}
+    Wert 1 & Wert 2 & Wert 3 & Wert 4 \\ \hline
+    \SI{1.0}{\meter} & \SI{35e-3}{\joule\per\second} & \num{12} & \SI{15.03(4)}{\pascal} \\
+    \num{32} & \num{12} & \num{33.5} & \num{1}
+  \end{tabular}
+  \caption{Unsere zweite Tabelle}
+  \label{tab:zweite_tabelle}
+\end{table}
+
+Wenn wir mit \verb|\SI{}{}| und \verb|\num{}| arbeiten, haben wir auch den
+charmanten Vorteil, dass wir nicht drüber nachdenken müssen, ob wir unsere
+Kommazahlen mit Kommata oder Punkten trennen, dass können wir einfach nach Lust
+und Laune oben in der Präambel ändern.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{
+      S[table-format=3.1(1)]
+      S[table-format=2.3(3)]
+      S[table-format=2.1(1)]
+      S[table-format=2.0]
+    }
+    {Wert 1 $[\text{mm}]$} & {Wert 2 $[\text{mm}]$} & {Wert 3 $[\text{mm}]$} & {Wert 4 $[\text{mm}]$} \\ \hline
+    122.7(1)               & 35.099(123)            & 12.0(5)                & 15                     \\
+    32                     & 12(3)                  & 33.5(1)                & 1                      \\
+  \end{tabular}
+  \caption{Unsere dritte Tabelle}%
+  \label{tab:dritte_tabelle}
+\end{table}
+
+Mit ein bisschen Kampf (aber das kann man ja beim nächsten Protokoll einfach
+kopieren und einfügen) können wir nun auch unsere Werte am Komma ausrichten
+und hübsch formatierte Unsicherheiten dazubasteln.
+Da das ganze immer noch die Dinge vom SI-package frisst, haben wir auch
+trotzdem kein Problem mit dem Komma-oder-Punkt-Ding.
+
+\section{Referenzenmanagement}
+Wenn man wissenschaftlich arbeitet, tut man dies selten originell.
+Oft verweist man auf Arbeiten anderer Leute, die vor einem kamen.
+Das macht man wie folgt: Oben in die Präambel schreiben wir wieder nette Dinge
+rein und zwar~\verb|\usepackage[backend=biber, style=alphabetic]{biblatex}|
+    um unser package zu laden und wir sagen ihm auch wo wir unsere Quellen
+    finden. Hier haben wir die in einem extra Text-file gespeichert und zwar
+    heißt der \emph{references.bib}. Das sieht dann so aus:
+\verb|\addbibresource{references.bib}|. In diesen Textfile schreiben wir unsere
+Quellen in einer besonderen, aber wichtigen Syntax. Es gibt die unangenehmsten
+Fehlermeldungen, wenn man das versemmelt.
+
+
+\begin{center}
+  \begin{verbatim}
+@Book{                citekey,
+   title        = {Titel vom Buch},
+   author       = {Nachname, Vorname and Zweitautornachn., Zvorname },
+   year         = {1986},
+   publisher    = {Verlag},
+}
+  \end{verbatim}
+\end{center}
+Im Text macht man dann einfach~\verb|\cite{citekey}|~\cite{Knuth1986}.
+Referenzen sollte man immer mal zu Beginn eines Schreibprozesses einbauen, dann
+weiß man gleich obs klappt und es haben schon viele vor euch versucht nur noch
+mal kurz die Referenzen einzufügen und hatten dann ne ziemlich unangenehme
+Nacht.
+
+Wenn wir dann unsere Quellen alle zusammenhaben, dann können wir den Spaß mit 
+\verb|\printbibliography| dann drucken. Und wir auch unser Inhaltsverzeichnis
+erscheint das ganze dann an genau der Stelle, wo wir auch den Befehl dazu
+schreiben.
+
+\printbibliography
+\end{document}
